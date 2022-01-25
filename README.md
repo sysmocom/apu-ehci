@@ -42,8 +42,46 @@ The following command will enable the USB-to-EHCI routing:
 
 	./apu-ehci enable
 
+Which should render something like this in your dmesg:
 
-You can disable it again with
+	usb 2-1: USB disconnect, device number 2
+	pci 0000:00:16.0: [1022:7808] type 00 class 0x0c0320
+	pci 0000:00:16.0: reg 0x10: [mem 0x00000000-0x000000ff]
+	pci 0000:00:16.0: supports D1 D2
+	pci 0000:00:16.0: PME# supported from D0 D1 D2 D3hot D3cold
+	pci 0000:00:16.0: BAR 0: assigned [mem 0xe0000000-0xe00000ff]
+	pci 0000:00:16.0: enabling device (0000 -> 0002)
+	pci 0000:00:16.0: PME# does not work under D3, disabling it
+	ehci-pci 0000:00:16.0: EHCI Host Controller
+	ehci-pci 0000:00:16.0: new USB bus registered, assigned bus number 4
+	ehci-pci 0000:00:16.0: applying AMD SB700/SB800/Hudson-2/3 EHCI dummy qh workaround
+	ehci-pci 0000:00:16.0: debug port 2
+	ehci-pci 0000:00:16.0: irq 55, io mem 0xe0000000
+	ehci-pci 0000:00:16.0: USB 2.0 started, EHCI 1.00
+	usb usb4: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.10
+	usb usb4: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+	usb usb4: Product: EHCI Host Controller
+	usb usb4: Manufacturer: Linux 5.10.0-10-amd64 ehci_hcd
+	usb usb4: SerialNumber: 0000:00:16.0
+	hub 4-0:1.0: USB hub found
+	hub 4-0:1.0: 2 ports detected
+	usb 4-1: new high-speed USB device number 2 using ehci-pci
+	usb 4-1: New USB device found, idVendor=0438, idProduct=7900, bcdDevice= 0.18
+	usb 4-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+	hub 4-1:1.0: USB hub found
+	hub 4-1:1.0: 2 ports detected
+
+Furthermore, the USB device[s] attahced to port 8/9 should now re-enumerate on the new bus:
+
+	usb 4-1.1: new full-speed USB device number 3 using ehci-pci
+	usb 4-1.1: New USB device found, idVendor=1d50, idProduct=6145, bcdDevice= 0.03
+	usb 4-1.1: New USB device strings: Mfr=2, Product=3, SerialNumber=1
+	usb 4-1.1: Product: icE1usb
+	usb 4-1.1: Manufacturer: osmocom
+	usb 4-1.1: SerialNumber: dc697407e7881531
+
+
+You can theoretically disable it again with the following command (not working here):
 
 	./apu-ehci disable
 
